@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="cs690_final_project_source/cs690_final_project_source.csproj" />
+  <Project Path="cs690_final_project_testing/cs690_final_project_testing.csproj" />
+</Solution>
