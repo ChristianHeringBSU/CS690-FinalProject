@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JsonSerializer" Version="1.0.5" />
     <PackageReference Include="Spectre.Console" Version="0.55.0" />
   </ItemGroup>
 

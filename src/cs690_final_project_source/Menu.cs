@@ -39,10 +39,10 @@ class Menu
     {
         var functionMap = new Dictionary<string, Delegate>
         {
-            ["Search For A Recipe"] = new Func<string>(NotImplemented),
-            ["Add A New Recipe"] = new Func<string>(NotImplemented),
-            ["Edit A Recipe"] = new Func<string>(NotImplemented),
-            ["Delete A Recipe"] = new Func<string>(NotImplemented),
+            ["Search For A Recipe"] = new Func<string>(Recipe.RecipeMenuSearch),
+            ["Add A New Recipe"] = new Func<string>(Recipe.RecipeMenuAdd),
+            ["Edit A Recipe"] = new Func<string>(Recipe.RecipeMenuEdit),
+            ["Delete A Recipe"] = new Func<string>(Recipe.RecipeMenuDelete),
         };
 
         string[] selectionOptions = ["Search For A Recipe", "Add A New Recipe", "Edit A Recipe", "Delete A Recipe",  "Return To Main Menu"];
@@ -120,10 +120,10 @@ class Menu
     {
         var functionMap = new Dictionary<string, Delegate>
         {
-            ["Add To Ingredient's Stock"] = new Func<string>(NotImplemented),
-            ["Remove From Ingredient's Stock"] = new Func<string>(NotImplemented),
-            ["List Ingredients"] = new Func<string>(NotImplemented),
-            ["Add new Ingredient"] = new Func<string>(NotImplemented),
+            ["Add To Ingredient's Stock"] = new Func<string>(Inventory.InventoryMenuAdd),
+            ["Remove From Ingredient's Stock"] = new Func<string>(Inventory.InventoryMenuRemove),
+            ["List Ingredients"] = new Func<string>(Inventory.InventoryMenuList),
+            ["Add new Ingredient"] = new Func<string>(Inventory.InventoryMenuAddNew),
         };
 
         string[] selectionOptions = ["Add To Ingredient's Stock", "Remove From Ingredient's Stock", "List Ingredients", "Add new Ingredient", "Return To Main Menu"];
@@ -143,7 +143,7 @@ class Menu
         return "";
     }
 
-    static string DisplaySelectMenu(string currentMenuName, string menuMessage, string[] selectionOptions)
+    public static string DisplaySelectMenu(string currentMenuName, string menuMessage, string[] selectionOptions)
     {
         AnsiConsole.MarkupLine("CS-690 Final Project: Christian Hering");
 
