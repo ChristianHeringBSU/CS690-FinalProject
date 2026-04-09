@@ -39,10 +39,10 @@ class Menu
     {
         var functionMap = new Dictionary<string, Delegate>
         {
-            ["Search For A Recipe"] = new Func<string>(Recipe.RecipeMenuSearch),
-            ["Add A New Recipe"] = new Func<string>(Recipe.RecipeMenuAdd),
-            ["Edit A Recipe"] = new Func<string>(Recipe.RecipeMenuEdit),
-            ["Delete A Recipe"] = new Func<string>(Recipe.RecipeMenuDelete),
+            ["Search For A Recipe"] = new Func<string>(RecipeMenuSearch),
+            ["Add A New Recipe"] = new Func<string>(RecipeMenuAdd),
+            ["Edit A Recipe"] = new Func<string>(RecipeMenuEdit),
+            ["Delete A Recipe"] = new Func<string>(RecipeMenuDelete),
         };
 
         string[] selectionOptions = ["Search For A Recipe", "Add A New Recipe", "Edit A Recipe", "Delete A Recipe",  "Return To Main Menu"];
@@ -60,6 +60,158 @@ class Menu
         }
 
         return "";
+    }
+
+    static string RecipeMenuSearch()
+    {
+        List<Recipes.Recipe> matchedRecipes;
+
+        while(true)
+        {
+            string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
+            if(search == "Exit")
+            {
+                return "";
+            }
+
+            matchedRecipes = Recipes.RecipeSearch(search);
+            if(matchedRecipes.Count > 0)
+            {
+                break;
+            }
+        }
+
+        string[] recipeTitles = new string[matchedRecipes.Count];
+
+        for(var i = 0; i < matchedRecipes.Count; i++)
+        {
+            recipeTitles[i] = matchedRecipes[i].title;
+        }
+
+        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+
+        return "";
+    }
+
+    static string RecipeMenuAdd()
+    {
+        string title;
+        List<Inventory.IngredientAmount> ingredients = new List<Inventory.IngredientAmount>();
+        string body;
+        
+        while(true)
+        {
+            title = AnsiConsole.Ask<string>("Enter the title for the new recipe. (Type \"Exit\" to go back to Recipe Menu)");
+            if(title.ToLower() == "exit")
+            {
+                return "";
+            }
+
+            if(title != "")
+            {
+                break;
+            }
+        }
+
+        while(true)
+        {
+            var ingredient = AnsiConsole.Ask<string>("Enter an ingredient in the new recipe. Type \"Done\" after entering all ingredients. (Type \"Exit\" to go back to Recipe Menu)");
+            if(ingredient.ToLower() == "exit")
+            {
+                return "";
+            }
+
+            if(ingredient.ToLower() == "done")
+            {
+                break;
+            }
+
+            var amount = AnsiConsole.Ask<string>("Enter the amount of that ingredient (in grams) in the recipe. (Type \"Exit\" to go back to Recipe Menu)");
+            if(ingredient.ToLower() == "exit")
+            {
+                return "";
+            }
+            
+            ingredients.Add(new Inventory.IngredientAmount{item = new Inventory.Ingredient{name = ingredient}, amount = Convert.ToDouble(amount)});
+        }
+
+        while(true)
+        {
+            body = AnsiConsole.Ask<string>("Enter the body of the new recipe. (Type \"Exit\" to go back to Recipe Menu)");
+            if(body.ToLower() == "Exit")
+            {
+                return "";
+            }
+
+            if(body != "")
+            {
+                break;
+            }
+        }
+
+        return Recipes.RecipeAdd(title, ingredients, body);
+    }
+
+    static string RecipeMenuEdit()
+    {
+        List<Recipes.Recipe> matchedRecipes;
+
+        while(true)
+        {
+            string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
+            if(search == "Exit")
+            {
+                return "";
+            }
+
+            matchedRecipes = Recipes.RecipeSearch(search);
+            if(matchedRecipes.Count > 0)
+            {
+                break;
+            }
+        }
+
+        string[] recipeTitles = new string[matchedRecipes.Count];
+
+        for(var i = 0; i < matchedRecipes.Count; i++)
+        {
+            recipeTitles[i] = matchedRecipes[i].title;
+        }
+
+        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+
+        return Recipes.RecipeEdit(selection);
+    }
+
+    static string RecipeMenuDelete()
+    {
+        List<Recipes.Recipe> matchedRecipes;
+
+        while(true)
+        {
+            string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
+            if(search == "Exit")
+            {
+                return "";
+            }
+
+            matchedRecipes = Recipes.RecipeSearch(search);
+            if(matchedRecipes.Count > 0)
+            {
+                break;
+            }
+        }
+
+        string[] recipeTitles = new string[matchedRecipes.Count];
+
+        for(var i = 0; i < matchedRecipes.Count; i++)
+        {
+            recipeTitles[i] = matchedRecipes[i].title;
+        }
+
+        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+
+        return Recipes.RecipeDelete(selection);
     }
 
     static string GroceryListMenu()
@@ -120,10 +272,10 @@ class Menu
     {
         var functionMap = new Dictionary<string, Delegate>
         {
-            ["Add To Ingredient's Stock"] = new Func<string>(Inventory.InventoryMenuAdd),
-            ["Remove From Ingredient's Stock"] = new Func<string>(Inventory.InventoryMenuRemove),
-            ["List Ingredients"] = new Func<string>(Inventory.InventoryMenuList),
-            ["Add new Ingredient"] = new Func<string>(Inventory.InventoryMenuAddNew),
+            ["Add To Ingredient's Stock"] = new Func<string>(InventoryMenuAdd),
+            ["Remove From Ingredient's Stock"] = new Func<string>(InventoryMenuRemove),
+            ["List Ingredients"] = new Func<string>(InventoryMenuList),
+            ["Add new Ingredient"] = new Func<string>(InventoryMenuAddNew),
         };
 
         string[] selectionOptions = ["Add To Ingredient's Stock", "Remove From Ingredient's Stock", "List Ingredients", "Add new Ingredient", "Return To Main Menu"];
@@ -141,6 +293,76 @@ class Menu
         }
 
         return "";
+    }
+
+    static string InventoryMenuAdd()
+    {
+        var ingredientName = AnsiConsole.Ask<string>("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
+        if(ingredientName.ToLower() == "exit")
+        {
+            return "";
+        }
+
+        var matchedIngredient = Inventory.InventorySearch(ingredientName);
+
+        var amount = AnsiConsole.Ask<string>("Enter the amount to add in grams. (Type \"Exit\" to go back to Inventory Management Menu)");
+
+        Inventory.InventoryAdd(matchedIngredient, amount);
+
+        return "";
+    }
+
+    static public string InventoryMenuRemove()
+    {
+        var ingredientName = AnsiConsole.Ask<string>("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
+        if(ingredientName.ToLower() == "exit")
+        {
+            return "";
+        }
+
+        var matchedIngredient = Inventory.InventorySearch(ingredientName);
+
+        var amount = AnsiConsole.Ask<string>("Enter the amount to remove. (Type \"Exit\" to go back to Inventory Management Menu)");
+
+        Inventory.InventoryRemove(matchedIngredient, amount);
+
+        return "";
+    }
+
+    static public string InventoryMenuList()
+    {
+        var inventory = new Table();
+        
+        inventory.AddColumn("Ingredient Name");
+        inventory.AddColumn("Amount In Inventory");
+        
+        foreach(var item in Storage.inventory)
+        {
+            inventory.AddRow(item.item.name, item.amount.ToString());
+        }
+        
+        AnsiConsole.Write(inventory);
+
+        _ = AnsiConsole.Ask<string>("Press enter to continue...");
+
+        return "";
+    }
+
+    static string InventoryMenuAddNew()
+    {
+        var ingredientName = "";
+        
+        while(true)
+        {
+            ingredientName = AnsiConsole.Ask<string>("Enter name of new ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
+
+            if(ingredientName != "")
+            {
+                break;
+            }
+        }
+
+        return Inventory.InventoryAddNew(ingredientName);
     }
 
     public static string DisplaySelectMenu(string currentMenuName, string menuMessage, string[] selectionOptions)

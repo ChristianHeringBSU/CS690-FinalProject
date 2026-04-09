@@ -4,122 +4,45 @@ using Spectre.Console;
 
 class Inventory
 {
-    static string InventorySearch(string searchString)
+    public struct Ingredient
+    {
+        public string name;
+    }
+
+    public struct IngredientAmount
+    {
+        public Ingredient item;
+        public double amount;
+    }
+
+    public static IngredientAmount InventorySearch(string searchString)
     {
         Storage.ReadInventory();
 
-        foreach(var item in Storage.inventory)
-        {
-            if(item.item.name == searchString)
-            {
-                return searchString;
-            }
-        }
-        
-        return "";
+        return Storage.inventory.First(n => n.item.name == searchString);
     }
 
-    static string InventoryAdd()
+    public static string InventoryAdd(IngredientAmount matchedIngredient, string amount)
     {
+        matchedIngredient.amount += Convert.ToDouble(amount);
 
-        return "";
+        return Storage.ReadInventory();
     }
 
-    static public string InventoryMenuAdd()
+    public static string InventoryRemove(IngredientAmount matchedIngredient, string amount)
     {
-        // search inventory (exact match ingredient)
-
-        // prompt for ingredient amount in grams
-
-        // add amount from ingredient
-
-        var ingredientName = AnsiConsole.Ask<string>("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
-
-        var matchedIngredient = InventorySearch(ingredientName);
-
-        var amount = AnsiConsole.Ask<string>("Enter the amount to add. (Type \"Exit\" to go back to Inventory Management Menu)");
-
-        Storage.inventory[matchedIngredient] += amount
+        matchedIngredient.amount -= Convert.ToDouble(amount);
 
         return "";
     }
 
-    static string InventoryRemove()
+    public static string InventoryAddNew(string item)
     {
+        // TODO: if exists, return
+
+        // else
+        Storage.inventory.Add(new IngredientAmount{item = new Ingredient{name = item}, amount = 0});
 
         return "";
-    }
-
-    static public string InventoryMenuRemove()
-    {
-        // search inventory (exact match ingredient)
-
-        // prompt for ingredient amount in grams
-
-        // remove amount from ingredient
-
-        var ingredientName = AnsiConsole.Ask<string>("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
-
-        var matchedIngredient = InventorySearch(ingredientName);
-
-        var amount = AnsiConsole.Ask<string>("Enter the amount to remove. (Type \"Exit\" to go back to Inventory Management Menu)");
-
-        Storage.inventory[matchedIngredient] -= amount;
-
-        return "";
-    }
-
-    static public string InventoryMenuList()
-    {
-        // display ingredients in a menu
-
-        var inventory = new Table();
-        
-        inventory.AddColumn("Ingredient Name");
-        inventory.AddColumn("Amount In Inventory");
-        
-        foreach(var ingredient in Storage.ingredients)
-        {
-            inventory.AddRow(ingredient.item, ingredient.amount);
-        }
-        
-        AnsiConsole.Write(inventory);
-
-        return "";
-    }
-
-    static string InventoryAddNew(string ingredientName)
-    {
-        // if match, return error
-        // else add return ""
-
-        foreach(var ingredient in Storage.ingredients)
-        {
-            if(ingredient == ingredientName)
-            {
-                return "error, ingredient already exists";
-            }
-        }
-
-        Storage.AddIngredient(ingredientName);
-
-        return "";
-    }
-
-    static public string InventoryMenuAddNew()
-    {
-        var ingredientName = "";
-        
-        while(true)
-        {
-            ingredientName = AnsiConsole.Ask<string>("Enter name of new ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
-
-            if(ingredientName != "")
-            {
-                break;
-            }
-        }
-
-        return InventoryAddNew(ingredientName);
     }
 }

@@ -1,14 +1,23 @@
 namespace cs690_final_project_source;
 
-using Spectre.Console;
+using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 
-class Recipe
+class Recipes
 {
-    static Storage.Recipes RecipeSearch(string searchString)
+    public struct Recipe
+    {
+        public string title;
+        public List<Inventory.IngredientAmount> ingredients;
+        public string body;
+    }
+
+    public static List<Recipe> RecipeSearch(string searchString)
     {
         Storage.ReadRecipes();
 
-        var matchedRecipes = new Storage.Recipes();
+        var matchedRecipes = new List<Recipe>();
 
         foreach(var recipe in Storage.recipes)
         {
@@ -21,97 +30,58 @@ class Recipe
             }
         }
 
-        return new Storage.Recipes();
+        return null; //new Storage.Recipe>();
     }
 
-    static public string RecipeMenuSearch()
+    public static string RecipeAdd(string title, List<Inventory.IngredientAmount> ingredients, string body)
     {
-        Storage.Recipes matchedRecipes;
+        var newRecipe = new Recipe{title = title, ingredients = ingredients, body = body};
 
-        while(true)
-        {
-            string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
+        Storage.recipes.Add(newRecipe);
 
-            if(search == "Exit")
-            {
-                return "";
-            }
-
-            matchedRecipes = RecipeSearch(search);
-            if(matchedRecipes.Length > 0)
-            {
-                break;
-            }
-        }
-
-        string selection = Menu.DisplaySelectMenu("Main Menu", "", matchedRecipes);
-
-        return "";
+        return Storage.WriteRecipes();
     }
 
-    static string RecipeAdd(string title, string ingredients, string body)
+    public static string RecipeEdit(string recipeTitle)
     {
-        Storage.recipes.Append(Storage.Recipe{title: title, ingredients: ingredients, body: body})
+        var recipe = Storage.recipes.First(n => n.title == recipeTitle);
 
-        Storage.WriteRecipes();
+        var tmpfile = Path.GetTempFileName();
 
-        return "";
-    }
+        string data = JsonSerializer.Serialize(recipe);
 
-    static public string RecipeMenuAdd()
-    {
-        var title = "";
-        var ingredients = "";
-        var body = "";
+        using StreamWriter fd = new StreamWriter(tmpfile);
+        fd.WriteLine(data);
         
-        while(true)
-        {
-            title = AnsiConsole.Ask<string>("Enter the title for the new recipe. (Type \"Exit\" to go back to Recipe Menu)");
-            ingredients = AnsiConsole.Ask<string>("Enter the ingredients of the new recipe as a comma separated list. (Type \"Exit\" to go back to Recipe Menu)");
-            body = AnsiConsole.Ask<string>("Enter the body of the new recipe. (Type \"Exit\" to go back to Recipe Menu)");
-
-            if(title != "" && ingredients != "" && body != "")
+        // https://stackoverflow.com/a/60018808
+        var p = new Process {
+            StartInfo = new ProcessStartInfo(tmpfile)
             {
-                break;
+                UseShellExecute = true
             }
+        };
+
+        p.Start();
+
+        p.WaitForExit();
+
+        using StreamReader reader = new(tmpfile);
+
+        recipe = JsonSerializer.Deserialize<Recipe>(reader.ReadToEnd()); // TODO: Does this modify the underlying data?
+
+        return Storage.WriteRecipes();
+    }
+
+    public static string RecipeDelete(string recipeTitle)
+    {
+        var recipe = Storage.recipes.First(n => n.title == recipeTitle);
+
+        var success = Storage.recipes.Remove(recipe);
+        if(success == false)
+        {
+            return "Error removing recipe from recipe list";
         }
 
-        var error = RecipeAdd(title, ingredients, body);
-
-        return "";
-    }
-
-    static string RecipeEdit()
-    {
-
-        return "";
-    }
-
-    static public string RecipeMenuEdit()
-    {
-        // search recipes
-
-        // select recipe from table
-
-        // open recipe editor
-
-        return "";
-    }
-
-    static string RecipeDelete()
-    {
-
-        return "";
-    }
-
-    static public string RecipeMenuDelete()
-    {
-        // search recipes
-
-        // select recipe from table
-
-        // delete recipe
-
-        return "";
+        return Storage.WriteRecipes();
     }
 }
