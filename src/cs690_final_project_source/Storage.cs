@@ -6,7 +6,7 @@ static class Storage
 {
     static string recipeFile = "recipes.json";
     static string groceryFile = "grocery_list.json";
-    static string ingredientFile = "ingredient.json";
+    static string ingredientFile = "ingredients.json";
     static string inventoryFile = "inventory.json";
 
     public static List<Recipes.Recipe> recipes = new List<Recipes.Recipe>();

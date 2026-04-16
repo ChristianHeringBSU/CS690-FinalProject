@@ -10,8 +10,20 @@ class Menu
 
         return "";
     }
+
+    static string Init()
+    {
+        Storage.ReadRecipes();
+        Storage.ReadGroceryList();
+        Storage.ReadSubstitutions();
+        Storage.ReadInventory();
+
+        return "";
+    }
     static public void MainMenu()
     {
+        Init(); // Initialize storage var values
+
         var functionMap = new Dictionary<string, Delegate>
         {
             ["Recipe"] = new Func<string>(RecipeMenu),
@@ -88,7 +100,25 @@ class Menu
             recipeTitles[i] = matchedRecipes[i].title;
         }
 
-        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+        string selection = DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+
+        var recipe = matchedRecipes.First(n => n.title == selection);
+
+        AnsiConsole.MarkupLine($"Recipe Menu: {selection}");
+        AnsiConsole.WriteLine("");
+
+        for(var i = 0; i < recipe.ingredients.Count; i++)
+        {
+            var ingredient = recipe.ingredients[i];
+            
+            AnsiConsole.MarkupLine($" - {ingredient.amount.ToString()}g {ingredient.item.name.ToString()}");
+        }
+
+        AnsiConsole.WriteLine("");
+        AnsiConsole.WriteLine(recipe.body);
+        AnsiConsole.WriteLine("");
+
+        _ = AnsiConsole.Ask("Press enter to return to Recipe Menu.", "");
 
         return "";
     }

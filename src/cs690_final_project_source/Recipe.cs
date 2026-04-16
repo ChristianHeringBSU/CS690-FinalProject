@@ -15,9 +15,9 @@ class Recipes
 
     public static List<Recipe> RecipeSearch(string searchString)
     {
-        Storage.ReadInventory();
+        Storage.ReadRecipes();
 
-        return Storage.recipes.FindAll(n => n.title == searchString);
+        return Storage.recipes.FindAll(n => n.title.Contains(searchString) == true);
     }
 
     public static string RecipeAdd(string title, List<Inventory.IngredientAmount> ingredients, string body)
