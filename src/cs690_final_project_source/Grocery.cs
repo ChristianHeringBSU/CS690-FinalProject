@@ -6,8 +6,8 @@ class Grocery
 {
     public struct GroceryListItem
     {
-        public Ingredient item;
-        public bool marked;
+        public Ingredient item { get; set; }
+        public bool marked { get; set; }
     }
     
     static string RecipeSearch()

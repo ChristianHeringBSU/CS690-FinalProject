@@ -6,8 +6,8 @@ class Ingredient
 {
     public struct Substitution
     {
-        public Ingredient toSub;
-        public Ingredient sub;
+        public Ingredient toSub { get; set; }
+        public Ingredient sub { get; set; }
     }
 
     static string RecipeSearch()

@@ -69,7 +69,7 @@ class Menu
         while(true)
         {
             string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
-            if(search == "Exit")
+            if(search.ToLower() == "exit")
             {
                 return "";
             }
@@ -331,6 +331,8 @@ class Menu
 
     static public string InventoryMenuList()
     {
+        Storage.ReadInventory();
+        
         var inventory = new Table();
         
         inventory.AddColumn("Ingredient Name");
@@ -338,7 +340,7 @@ class Menu
         
         foreach(var item in Storage.inventory)
         {
-            inventory.AddRow(item.item.name, item.amount.ToString());
+            inventory.AddRow(item.item.name.ToString(), item.amount.ToString());
         }
         
         AnsiConsole.Write(inventory);

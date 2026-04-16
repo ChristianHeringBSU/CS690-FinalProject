@@ -2,24 +2,17 @@ using System.Text.Json;
 
 namespace cs690_final_project_source;
 
-class Storage
+static class Storage
 {
     static string recipeFile = "recipes.json";
     static string groceryFile = "grocery_list.json";
     static string ingredientFile = "ingredient.json";
     static string inventoryFile = "inventory.json";
 
-    public static List<Recipes.Recipe> recipes;
-    public static List<Grocery.GroceryListItem> groceryList;
-    public static List<Ingredient.Substitution> substitutions;
-    public static List<Inventory.IngredientAmount> inventory;
-
-    static Storage() {
-        recipes = new List<Recipes.Recipe>();
-        groceryList = new List<Grocery.GroceryListItem>();
-        substitutions = new List<Ingredient.Substitution>();
-        inventory = new List<Inventory.IngredientAmount>();
-    }
+    public static List<Recipes.Recipe> recipes = new List<Recipes.Recipe>();
+    public static List<Grocery.GroceryListItem> groceryList = new List<Grocery.GroceryListItem>();
+    public static List<Ingredient.Substitution> substitutions = new List<Ingredient.Substitution>();
+    public static List<Inventory.IngredientAmount> inventory = new List<Inventory.IngredientAmount>();
 
     public static string ReadRecipes()
     {

@@ -8,33 +8,22 @@ class Recipes
 {
     public struct Recipe
     {
-        public string title;
-        public List<Inventory.IngredientAmount> ingredients;
-        public string body;
+        public string title { get; set; }
+        public List<Inventory.IngredientAmount> ingredients { get; set; }
+        public string body { get; set; }
     }
 
     public static List<Recipe> RecipeSearch(string searchString)
     {
-        Storage.ReadRecipes();
+        Storage.ReadInventory();
 
-        var matchedRecipes = new List<Recipe>();
-
-        foreach(var recipe in Storage.recipes)
-        {
-            bool titleMatches = recipe.title.Contains(searchString);
-            bool bodyMatches = recipe.body.Contains(searchString);
-
-            if(titleMatches || bodyMatches)
-            {
-                matchedRecipes.Append(recipe);
-            }
-        }
-
-        return null; //new Storage.Recipe>();
+        return Storage.recipes.FindAll(n => n.title == searchString);
     }
 
     public static string RecipeAdd(string title, List<Inventory.IngredientAmount> ingredients, string body)
     {
+        Storage.ReadRecipes();
+
         var newRecipe = new Recipe{title = title, ingredients = ingredients, body = body};
 
         Storage.recipes.Add(newRecipe);
