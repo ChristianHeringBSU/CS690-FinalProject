@@ -42,12 +42,15 @@ class Recipes
 
         using StreamWriter fd = new StreamWriter(tmpfile);
         fd.WriteLine(data);
+        fd.Close();
 
         _ = AnsiConsole.Ask($"Please open {tmpfile} and hit enter when finished", "");
 
         using StreamReader reader = new(tmpfile);
+        var newrecipe = JsonSerializer.Deserialize<Recipe>(reader.ReadToEnd());
 
-        recipe = JsonSerializer.Deserialize<Recipe>(reader.ReadToEnd()); // TODO: Does this modify the underlying data?
+        Storage.recipes.Add(newrecipe);
+        Storage.recipes.Remove(recipe);
 
         return Storage.WriteRecipes();
     }
