@@ -6,7 +6,7 @@ class Menu
 {
     static string NotImplemented()
     {
-        AnsiConsole.WriteLine("Not Implemented!");
+        _ = AnsiConsole.Ask("Not Implemented!", "");
 
         return "";
     }
@@ -80,7 +80,7 @@ class Menu
 
         while(true)
         {
-            string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
+            string search = AnsiConsole.Ask("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)", "");
             if(search.ToLower() == "exit")
             {
                 return "";
@@ -131,7 +131,7 @@ class Menu
         
         while(true)
         {
-            title = AnsiConsole.Ask<string>("Enter the title for the new recipe. (Type \"Exit\" to go back to Recipe Menu)");
+            title = AnsiConsole.Ask("Enter the title for the new recipe. (Type \"Exit\" to go back to Recipe Menu)", "");
             if(title.ToLower() == "exit")
             {
                 return "";
@@ -145,7 +145,7 @@ class Menu
 
         while(true)
         {
-            var ingredient = AnsiConsole.Ask<string>("Enter an ingredient in the new recipe. Type \"Done\" after entering all ingredients. (Type \"Exit\" to go back to Recipe Menu)");
+            var ingredient = AnsiConsole.Ask("Enter an ingredient in the new recipe. Type \"Done\" after entering all ingredients. (Type \"Exit\" to go back to Recipe Menu)", "");
             if(ingredient.ToLower() == "exit")
             {
                 return "";
@@ -156,7 +156,7 @@ class Menu
                 break;
             }
 
-            var amount = AnsiConsole.Ask<string>("Enter the amount of that ingredient (in grams) in the recipe. (Type \"Exit\" to go back to Recipe Menu)");
+            var amount = AnsiConsole.Ask("Enter the amount of that ingredient (in grams) in the recipe. (Type \"Exit\" to go back to Recipe Menu)", "");
             if(ingredient.ToLower() == "exit")
             {
                 return "";
@@ -167,7 +167,7 @@ class Menu
 
         while(true)
         {
-            body = AnsiConsole.Ask<string>("Enter the body of the new recipe. (Type \"Exit\" to go back to Recipe Menu)");
+            body = AnsiConsole.Ask("Enter the body of the new recipe. (Type \"Exit\" to go back to Recipe Menu)", "");
             if(body.ToLower() == "Exit")
             {
                 return "";
@@ -188,7 +188,7 @@ class Menu
 
         while(true)
         {
-            string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
+            string search = AnsiConsole.Ask("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)", "");
             if(search == "Exit")
             {
                 return "";
@@ -219,7 +219,7 @@ class Menu
 
         while(true)
         {
-            string search = AnsiConsole.Ask<string>("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)");
+            string search = AnsiConsole.Ask("What recipe are you searching for? (Type \"Exit\" to go back to Recipe Menu)", "");
             if(search == "Exit")
             {
                 return "";
@@ -327,7 +327,7 @@ class Menu
 
     static string InventoryMenuAdd()
     {
-        var ingredientName = AnsiConsole.Ask<string>("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
+        var ingredientName = AnsiConsole.Ask("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)", "");
         if(ingredientName.ToLower() == "exit")
         {
             return "";
@@ -335,7 +335,7 @@ class Menu
 
         var matchedIngredient = Inventory.InventorySearch(ingredientName);
 
-        var amount = AnsiConsole.Ask<string>("Enter the amount to add in grams. (Type \"Exit\" to go back to Inventory Management Menu)");
+        var amount = AnsiConsole.Ask("Enter the amount to add in grams. (Type \"Exit\" to go back to Inventory Management Menu)", "");
 
         Inventory.InventoryAdd(matchedIngredient, amount);
 
@@ -344,7 +344,7 @@ class Menu
 
     static public string InventoryMenuRemove()
     {
-        var ingredientName = AnsiConsole.Ask<string>("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
+        var ingredientName = AnsiConsole.Ask("Enter name of the ingredient. (Type \"Exit\" to go back to Inventory Management Menu)", "");
         if(ingredientName.ToLower() == "exit")
         {
             return "";
@@ -352,7 +352,7 @@ class Menu
 
         var matchedIngredient = Inventory.InventorySearch(ingredientName);
 
-        var amount = AnsiConsole.Ask<string>("Enter the amount to remove. (Type \"Exit\" to go back to Inventory Management Menu)");
+        var amount = AnsiConsole.Ask("Enter the amount to remove. (Type \"Exit\" to go back to Inventory Management Menu)", "");
 
         Inventory.InventoryRemove(matchedIngredient, amount);
 
@@ -375,7 +375,7 @@ class Menu
         
         AnsiConsole.Write(inventory);
 
-        _ = AnsiConsole.Ask<string>("Press enter to continue...");
+        _ = AnsiConsole.Ask("Press enter to continue...", "");
 
         return "";
     }
@@ -386,7 +386,11 @@ class Menu
         
         while(true)
         {
-            ingredientName = AnsiConsole.Ask<string>("Enter name of new ingredient. (Type \"Exit\" to go back to Inventory Management Menu)");
+            ingredientName = AnsiConsole.Ask("Enter name of new ingredient. (Type \"Exit\" to go back to Inventory Management Menu)", "");
+            if(ingredientName.ToLower() == "exit")
+            {
+                return "";
+            }
 
             if(ingredientName != "")
             {
