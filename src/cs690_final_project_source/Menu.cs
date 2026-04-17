@@ -166,7 +166,7 @@ class Menu
             {
                 _ = Convert.ToDouble(amount);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 AnsiConsole.Ask("Invalid amount entered!", "");
 
@@ -345,7 +345,7 @@ class Menu
         }
 
         var matchedIngredient = Inventory.InventorySearch(ingredientName);
-        if(matchedIngredient.item.name == "")
+        if(matchedIngredient.item.name == null)
         {
             AnsiConsole.Ask("Invalid ingredient name entered.", "");
 
@@ -356,6 +356,17 @@ class Menu
         if(amount.Contains("-"))
         {
             AnsiConsole.Ask("Invalid amount entered.", "");
+
+            return "";
+        }
+
+        try
+        {
+            _ = Convert.ToDouble(amount);
+        }
+        catch(Exception)
+        {
+            AnsiConsole.Ask("Invalid amount entered!", "");
 
             return "";
         }
@@ -374,7 +385,7 @@ class Menu
         }
 
         var matchedIngredient = Inventory.InventorySearch(ingredientName);
-        if(matchedIngredient.item.name == "")
+        if(matchedIngredient.item.name == null)
         {
             AnsiConsole.Ask("Invalid ingredient name entered.", "");
 
@@ -385,6 +396,17 @@ class Menu
         if(amount.Contains("-"))
         {
             AnsiConsole.Ask("Invalid amount entered.", "");
+
+            return "";
+        }
+
+        try
+        {
+            _ = Convert.ToDouble(amount);
+        }
+        catch(Exception)
+        {
+            AnsiConsole.Ask("Invalid amount entered!", "");
 
             return "";
         }
