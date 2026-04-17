@@ -20,7 +20,7 @@ class Inventory
     {
         Storage.ReadInventory();
 
-        return Storage.inventory.First(n => n.item.name == searchString);
+        return Storage.inventory.FirstOrDefault(n => n.item.name == searchString);
     }
 
     public static string InventoryAdd(IngredientAmount matchedIngredient, string amount)
@@ -57,9 +57,13 @@ class Inventory
     {
         Storage.ReadInventory();
 
-        // TODO: if exists, return
+        if(Storage.inventory.Exists(n => n.item.name == item) == false)
+        {
+            AnsiConsole.Ask("That inventory item already exists. Press enter to continue.", "");
 
-        // else
+            return "";
+        }
+
         Storage.inventory.Add(new IngredientAmount{item = new Ingredient{name = item}, amount = 0.0});
 
         return Storage.WriteInventory();

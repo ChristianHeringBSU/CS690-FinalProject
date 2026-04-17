@@ -161,6 +161,17 @@ class Menu
             {
                 return "";
             }
+
+            try
+            {
+                _ = Convert.ToDouble(amount);
+            }
+            catch(Exception e)
+            {
+                AnsiConsole.Ask("Invalid amount entered!", "");
+
+                return "";
+            }
             
             ingredients.Add(new Inventory.IngredientAmount{item = new Inventory.Ingredient{name = ingredient}, amount = Convert.ToDouble(amount)});
         }
@@ -334,8 +345,20 @@ class Menu
         }
 
         var matchedIngredient = Inventory.InventorySearch(ingredientName);
+        if(matchedIngredient.item.name == "")
+        {
+            AnsiConsole.Ask("Invalid ingredient name entered.", "");
+
+            return "";
+        }
 
         var amount = AnsiConsole.Ask("Enter the amount to add in grams. (Type \"Exit\" to go back to Inventory Management Menu)", "");
+        if(amount.Contains("-"))
+        {
+            AnsiConsole.Ask("Invalid amount entered.", "");
+
+            return "";
+        }
 
         Inventory.InventoryAdd(matchedIngredient, amount);
 
@@ -351,8 +374,20 @@ class Menu
         }
 
         var matchedIngredient = Inventory.InventorySearch(ingredientName);
+        if(matchedIngredient.item.name == "")
+        {
+            AnsiConsole.Ask("Invalid ingredient name entered.", "");
+
+            return "";
+        }
 
         var amount = AnsiConsole.Ask("Enter the amount to remove. (Type \"Exit\" to go back to Inventory Management Menu)", "");
+        if(amount.Contains("-"))
+        {
+            AnsiConsole.Ask("Invalid amount entered.", "");
+
+            return "";
+        }
 
         Inventory.InventoryRemove(matchedIngredient, amount);
 

@@ -52,6 +52,8 @@ class Recipes
 
         p.Start();
 
+        Thread.Sleep(1000);
+
         p.WaitForExit();
 
         using StreamReader reader = new(tmpfile);
