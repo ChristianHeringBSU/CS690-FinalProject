@@ -3,6 +3,7 @@ namespace cs690_final_project_source;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
+using Spectre.Console;
 
 class Recipes
 {
@@ -41,20 +42,8 @@ class Recipes
 
         using StreamWriter fd = new StreamWriter(tmpfile);
         fd.WriteLine(data);
-        
-        // https://stackoverflow.com/a/60018808
-        var p = new Process {
-            StartInfo = new ProcessStartInfo(tmpfile)
-            {
-                UseShellExecute = true
-            }
-        };
 
-        p.Start();
-
-        Thread.Sleep(1000);
-
-        p.WaitForExit();
+        _ = AnsiConsole.Ask($"Please open {tmpfile} and hit enter when finished", "");
 
         using StreamReader reader = new(tmpfile);
 
