@@ -1,5 +1,6 @@
 namespace cs690_final_project_source;
 
+using System.Runtime.CompilerServices;
 using Spectre.Console;
 
 class Menu
@@ -32,7 +33,7 @@ class Menu
             ["Inventory Management"] = new Func<string>(InventoryManagementMenu),
         };
 
-        string[] selectionOptions = ["Recipe", "Grocery List", "Ingredient Substitutions", "Inventory Management", "Exit"];
+        var selectionOptions = new List<string>{"Recipe", "Grocery List", "Ingredient Substitutions", "Inventory Management", "Exit"};
 
         while(true)
         {
@@ -57,7 +58,7 @@ class Menu
             ["Delete A Recipe"] = new Func<string>(RecipeMenuDelete),
         };
 
-        string[] selectionOptions = ["Search For A Recipe", "Add A New Recipe", "Edit A Recipe", "Delete A Recipe",  "Return To Main Menu"];
+        var selectionOptions = new List<string>{"Search For A Recipe", "Add A New Recipe", "Edit A Recipe", "Delete A Recipe",  "Return To Main Menu"};
 
         while(true)
         {
@@ -100,7 +101,7 @@ class Menu
             recipeTitles[i] = matchedRecipes[i].title;
         }
 
-        string selection = DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+        string selection = DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles.ToList());
 
         var recipe = matchedRecipes.First(n => n.title == selection);
 
@@ -219,7 +220,7 @@ class Menu
             recipeTitles[i] = matchedRecipes[i].title;
         }
 
-        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles.ToList());
 
         return Recipes.RecipeEdit(selection);
     }
@@ -250,7 +251,7 @@ class Menu
             recipeTitles[i] = matchedRecipes[i].title;
         }
 
-        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles);
+        string selection = Menu.DisplaySelectMenu("Recipe Menu", "Search For A Recipe", recipeTitles.ToList());
 
         return Recipes.RecipeDelete(selection);
     }
@@ -259,14 +260,14 @@ class Menu
     {
         var functionMap = new Dictionary<string, Delegate>
         {
-            ["Add Item To Grocery List"] = new Func<string>(NotImplemented),
-            ["Mark Item On Grocery List"] = new Func<string>(NotImplemented),
-            ["Display Grocery List"] = new Func<string>(NotImplemented),
-            ["Delete Item On Grocery List"] = new Func<string>(NotImplemented),
-            ["Clear Grocery List"] = new Func<string>(NotImplemented),
+            ["Add Item To Grocery List"] = new Func<string>(GroceryListMenuAdd),
+            ["Mark Item On Grocery List"] = new Func<string>(GroceryListMenuMark),
+            ["Display Grocery List"] = new Func<string>(GroceryListMenuDisplay),
+            ["Delete Item On Grocery List"] = new Func<string>(GroceryListMenuDelete),
+            ["Clear Grocery List"] = new Func<string>(GroceryListMenuClear),
         };
 
-        string[] selectionOptions = ["Add Item To Grocery List", "Mark Item On Grocery List", "Display Grocery List", "Delete Item On Grocery List", "Clear Grocery List", "Return To Main Menu"];
+        var selectionOptions = new List<string>{"Add Item To Grocery List", "Mark Item On Grocery List", "Display Grocery List", "Delete Item On Grocery List", "Clear Grocery List", "Return To Main Menu"};
 
         while(true)
         {
@@ -283,16 +284,87 @@ class Menu
         return "";
     }
 
+    static string GroceryListMenuAdd()
+    {
+        Storage.ReadGroceryList();
+
+        AnsiConsole.WriteLine();
+
+        string item = AnsiConsole.Ask<string>("Enter name of the item. (Type \"Exit\" to go back to Grocery List Menu)");
+        if(item.ToLower() == "exit")
+        {
+            return "";
+        }
+
+        return Grocery.GroceryListAdd(item);
+    }
+
+    static string GroceryListMenuMark()
+    {
+        var items = new List<string>();
+
+        foreach(var item in Storage.groceryList)
+        {
+            items.Add(item.item.name);
+        }
+
+        var selection = DisplaySelectMenu("Grocery List", "Mark Item", items);
+        
+        return Grocery.GroceryListMark(selection);
+    }
+
+    static string GroceryListMenuDisplay()
+    {
+        Storage.ReadGroceryList();
+        
+        var grocery_list = new Table();
+        
+        grocery_list.AddColumn("Grocery List Item");
+        grocery_list.AddColumn("Is Marked");
+        
+        foreach(var item in Storage.groceryList)
+        {
+            grocery_list.AddRow(item.item.name.ToString(), item.marked.ToString());
+        }
+        
+        AnsiConsole.Write(grocery_list);
+
+        _ = AnsiConsole.Ask("Press enter to continue...", "");
+        
+        return "";
+    }
+
+    static string GroceryListMenuDelete()
+    {
+        var items = new List<string>();
+
+        foreach(var item in Storage.groceryList)
+        {
+            items.Add(item.item.name);
+        }
+
+        var selection = DisplaySelectMenu("Grocery List", "Delete Item", items);
+        
+        return Grocery.GroceryListDelete(selection);
+    }
+
+    static string GroceryListMenuClear()
+    {
+        AnsiConsole.WriteLine("Clearing marked items from grocery list...");
+
+        return Grocery.GroceryListClear();
+    }
+
     static string IngredientSubstitutionMenu()
     {
         var functionMap = new Dictionary<string, Delegate>
         {
-            ["Add Substitution"] = new Func<string>(NotImplemented),
-            ["Delete Substitution"] = new Func<string>(NotImplemented),
-            ["Search Substitutions"] = new Func<string>(NotImplemented),
+            ["Add Substitution"] = new Func<string>(SubstitutionAdd),
+            ["Delete Substitution"] = new Func<string>(SubstitutionDelete),
+            ["Search Substitutions"] = new Func<string>(SubstitutionSearch),
         };
 
-        string[] selectionOptions = ["Add Substitution", "Delete Substitution", "Search Substitutions", "Return To Main Menu"];
+        var selectionOptions = new List<string>{"Add Substitution", "Delete Substitution", "Search Substitutions", "Return To Main Menu"};
 
         while(true)
         {
@@ -309,6 +381,87 @@ class Menu
         return "";
     }
 
+    static string SubstitutionSearch()
+    {
+        Storage.ReadSubstitutions();
+        
+        var search = AnsiConsole.Ask("Please search for a substitution or type \"Exit\" to return to the Ingredient Substitution menu.", "");
+        if(search.ToLower() == "exit")
+        {
+            return "";
+        }
+
+        var substitutions = new Table();
+        
+        substitutions.AddColumn("Index");
+        substitutions.AddColumn("Item To Replace");
+        substitutions.AddColumn("Substitution");
+        
+        foreach(var item in Storage.substitutions)
+        {
+            if(item.sub.name.Contains(search) != true && item.toSub.name.Contains(search) != true)
+            {
+                continue;
+            }
+
+            substitutions.AddRow(Storage.substitutions.IndexOf(item).ToString(), item.toSub.name.ToString(), item.sub.name.ToString());
+        }
+        
+        AnsiConsole.Write(substitutions);
+
+        _ = AnsiConsole.Ask("Press enter to continue...", "");
+        
+        return "";
+    }
+
+    static string SubstitutionAdd()
+    {
+        var item = AnsiConsole.Ask("Please input the item to be replaced. Type \"Exit\" to return to Ingredient Substitution Menu.", "");
+        if(item.ToLower() == "exit")
+        {
+            return "";
+        }
+
+        var substitution = AnsiConsole.Ask("Please input the substitution. Type \"Exit\" to return to Ingredient Substitution Menu.", "");
+        if(substitution.ToLower() == "exit")
+        {
+            return "";
+        }
+
+        return Ingredient.SubstitutionAdd(new Ingredient.Substitution{toSub = new Inventory.Ingredient{name = item}, sub = new Inventory.Ingredient{name = substitution}});
+    }
+
+    static string SubstitutionDelete()
+    {
+        var substitutions = new Table();
+        
+        substitutions.AddColumn("Index");
+        substitutions.AddColumn("Item To Replace");
+        substitutions.AddColumn("Substitution");
+        
+        foreach(var item in Storage.substitutions)
+        {
+            substitutions.AddRow(Storage.substitutions.IndexOf(item).ToString(), item.toSub.name.ToString(), item.sub.name.ToString());
+        }
+        
+        AnsiConsole.Write(substitutions);
+
+        var selection = AnsiConsole.Ask("Please enter the index number of the substitution to remove or type \"Exit\" to return to the Ingredient Substitution Menu.", "");
+        if(selection.ToLower() == "exit")
+        {
+            return "";
+        }
+
+        if(Convert.ToDouble(selection) >= Storage.substitutions.Count)
+        {
+            AnsiConsole.Ask("Invalid input. Press enter to continue...", "");
+
+            return "";
+        }
+
+        return Ingredient.SubstitutionDelete(selection);
+    }
+
     static string InventoryManagementMenu()
     {
         var functionMap = new Dictionary<string, Delegate>
@@ -319,7 +472,7 @@ class Menu
             ["Add new Ingredient"] = new Func<string>(InventoryMenuAddNew),
         };
 
-        string[] selectionOptions = ["Add To Ingredient's Stock", "Remove From Ingredient's Stock", "List Ingredients", "Add new Ingredient", "Return To Main Menu"];
+        var selectionOptions = new List<string>{"Add To Ingredient's Stock", "Remove From Ingredient's Stock", "List Ingredients", "Add new Ingredient", "Return To Main Menu"};
 
         while(true)
         {
@@ -458,7 +611,7 @@ class Menu
         return Inventory.InventoryAddNew(ingredientName);
     }
 
-    public static string DisplaySelectMenu(string currentMenuName, string menuMessage, string[] selectionOptions)
+    public static string DisplaySelectMenu(string currentMenuName, string menuMessage, List<string> selectionOptions)
     {
         AnsiConsole.MarkupLine("CS-690 Final Project: Christian Hering");
 

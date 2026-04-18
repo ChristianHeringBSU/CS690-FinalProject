@@ -1,7 +1,6 @@
 namespace cs690_final_project_source;
 
 using Spectre.Console;
-using System.Text.Json;
 
 class Inventory
 {
