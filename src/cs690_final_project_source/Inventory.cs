@@ -2,7 +2,7 @@ namespace cs690_final_project_source;
 
 using Spectre.Console;
 
-class Inventory
+public class Inventory
 {
     public struct Ingredient
     {
@@ -52,18 +52,18 @@ class Inventory
         return Storage.WriteInventory();
     }
 
-    public static string InventoryAddNew(string item)
+    public static string InventoryAddNew(string item_name)
     {
         Storage.ReadInventory();
 
-        if(Storage.inventory.Exists(n => n.item.name == item) == false)
+        if(Storage.inventory.Exists(n => n.item.name == item_name) == true)
         {
             AnsiConsole.Ask("That inventory item already exists. Press enter to continue.", "");
 
             return "";
         }
 
-        Storage.inventory.Add(new IngredientAmount{item = new Ingredient{name = item}, amount = 0.0});
+        Storage.inventory.Add(new IngredientAmount{item = new Ingredient{name = item_name}, amount = 0.0});
 
         return Storage.WriteInventory();
     }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Text.Json;
 using Spectre.Console;
 
-class Recipes
+public class Recipes
 {
     public struct Recipe
     {

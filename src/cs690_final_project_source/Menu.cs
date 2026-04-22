@@ -1,17 +1,9 @@
 namespace cs690_final_project_source;
 
-using System.Runtime.CompilerServices;
 using Spectre.Console;
 
-class Menu
+public class Menu
 {
-    static string NotImplemented()
-    {
-        _ = AnsiConsole.Ask("Not Implemented!", "");
-
-        return "";
-    }
-
     static string Init()
     {
         Storage.ReadRecipes();

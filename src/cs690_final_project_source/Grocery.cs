@@ -1,8 +1,6 @@
 namespace cs690_final_project_source;
 
-using Spectre.Console;
-
-class Grocery
+public class Grocery
 {
     public struct GroceryListItem
     {
