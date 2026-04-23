@@ -425,31 +425,14 @@ public class Menu
 
     static string SubstitutionDelete()
     {
-        var substitutions = new Table();
-        
-        substitutions.AddColumn("Index");
-        substitutions.AddColumn("Item To Replace");
-        substitutions.AddColumn("Substitution");
-        
+        List<string> options = List<string>;
+
         foreach(var item in Storage.substitutions)
         {
-            substitutions.AddRow(Storage.substitutions.IndexOf(item).ToString(), item.toSub.name.ToString(), item.sub.name.ToString());
-        }
-        
-        AnsiConsole.Write(substitutions);
-
-        var selection = AnsiConsole.Ask("Please enter the index number of the substitution to remove or type \"Exit\" to return to the Ingredient Substitution Menu.", "");
-        if(selection.ToLower() == "exit")
-        {
-            return "";
+            options.Add(item.sub.name.ToString());
         }
 
-        if(Convert.ToDouble(selection) >= Storage.substitutions.Count)
-        {
-            AnsiConsole.Ask("Invalid input. Press enter to continue...", "");
-
-            return "";
-        }
+        string selection = DisplaySelectMenu("Substitution Menu", Delete A Substitution, options);
 
         return Ingredient.SubstitutionDelete(selection);
     }
