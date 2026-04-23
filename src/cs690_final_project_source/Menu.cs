@@ -425,14 +425,14 @@ public class Menu
 
     static string SubstitutionDelete()
     {
-        List<string> options = List<string>;
+        List<string> options = new List<string>{};
 
         foreach(var item in Storage.substitutions)
         {
             options.Add(item.sub.name.ToString());
         }
 
-        string selection = DisplaySelectMenu("Substitution Menu", Delete A Substitution, options);
+        string selection = DisplaySelectMenu("Substitution Menu", "Delete A Substitution", options);
 
         return Ingredient.SubstitutionDelete(selection);
     }
