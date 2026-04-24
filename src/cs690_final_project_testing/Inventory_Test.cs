@@ -4,9 +4,10 @@ using System.Text;
 
 using cs690_final_project_source;
 
+[Collection("Sequential")]
 public class Inventory_Test
 {
-    [Collection("Sequential")]
+    [Fact]
     public void InventorySearch_Test()
     {
         // Write data to disk
@@ -23,7 +24,7 @@ public class Inventory_Test
         Assert.Equal(768, result.amount);
     }
 
-    [Collection("Sequential")]
+    [Fact]
     public void InventoryAdd_Test()
     {
         // Write data to inventory.json
@@ -47,7 +48,7 @@ public class Inventory_Test
         Assert.Equal(800, result.amount);
     }
 
-    [Collection("Sequential")]
+    [Fact]
     public void InventoryRemove_Test()
     {
         // Write data to inventory.json
@@ -73,7 +74,7 @@ public class Inventory_Test
         Assert.Equal(700, result.amount);
     }
 
-    [Collection("Sequential")]
+    [Fact]
     public void InventoryAddNew_Test()
     {
         // Write data to inventory.json
