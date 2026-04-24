@@ -7,7 +7,7 @@ using cs690_final_project_source;
 
 public class Storage_Test
 {
-    [Fact]
+    [Collection("Sequential")]
     public void ReadRecipes_Test()
     {
         // Write data to recipes.json
@@ -24,7 +24,7 @@ public class Storage_Test
         Assert.Equal(Encoding.UTF8.GetString(b), data.ToString());
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void WriteRecipes_Test()
     {
         // Write an empty recipe list to Storage.recipes
@@ -39,7 +39,7 @@ public class Storage_Test
         Assert.Equal("[]", s.Trim());
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void ReadGroceryList_Test()
     {
         // Write data to grocery_list.json
@@ -56,7 +56,7 @@ public class Storage_Test
         Assert.Equal(Encoding.UTF8.GetString(b), data.ToString());
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void WriteGroceryList_Test()
     {
         // Make an empty grocery list object
@@ -71,7 +71,7 @@ public class Storage_Test
         Assert.Equal("[]", s.Trim());
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void ReadSubstitutions_Test()
     {
         // Write data to disk
@@ -88,7 +88,7 @@ public class Storage_Test
         Assert.Equal(Encoding.UTF8.GetString(b), data.ToString());
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void WriteSubstitutions_Test()
     {
         // Make an empty substitutions object
@@ -103,7 +103,7 @@ public class Storage_Test
         Assert.Equal("[]", s.Trim());
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void ReadInventory_Test()
     {
         // Write data to disk
@@ -120,7 +120,7 @@ public class Storage_Test
         Assert.Equal(Encoding.UTF8.GetString(b), data.ToString());
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void WriteInventory_Test()
     {
         // Make an empty inventory object
