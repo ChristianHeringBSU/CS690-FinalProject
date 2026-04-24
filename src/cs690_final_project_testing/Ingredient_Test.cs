@@ -6,7 +6,7 @@ using cs690_final_project_source;
 
 public class Ingredient_Test
 {
-    [Fact]
+    [Collection("Sequential")]
     public void SubstitutionAdd_Test()
     {
         // Write data to ingredients.json
@@ -33,7 +33,7 @@ public class Ingredient_Test
         Assert.Equal("applesauce", Storage.substitutions[0].sub.name);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void SubstitutionDelete_Test()
     {
         // Write data to ingredients.json
