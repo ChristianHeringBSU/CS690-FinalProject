@@ -17,11 +17,11 @@ public class Ingredient
         return Storage.WriteSubstitutions();
     }
 
-    public static string SubstitutionDelete(string selection)
+    public static string SubstitutionDelete(string toSub_selection, string sub_selection)
     {
         Storage.ReadSubstitutions();
 
-        var entry = Storage.substitutions[Convert.ToInt32(selection)];
+        var entry = Storage.substitutions.Find(n => n.toSub.name == toSub_selection || n.sub.name == sub_selection);
 
         Storage.substitutions.Remove(entry);
 
