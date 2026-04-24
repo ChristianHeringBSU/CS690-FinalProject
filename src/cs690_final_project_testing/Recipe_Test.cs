@@ -6,7 +6,7 @@ using cs690_final_project_source;
 
 public class Recipe_Test
 {
-    [Fact]
+    [Collection("Sequential")]
     public void RecipeSearch_Test()
     {
         // Write data to recipes.json
@@ -23,7 +23,7 @@ public class Recipe_Test
         Assert.Equal("fried eggs", result[0].title);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void RecipeAdd_Test()
     {
         // Write data to recipes.json
@@ -40,7 +40,7 @@ public class Recipe_Test
         Assert.True(Storage.recipes.Count == 1);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void RecipeDelete_Test()
     {
         // Write data to recipes.json
