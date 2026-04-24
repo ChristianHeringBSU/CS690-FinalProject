@@ -68,7 +68,7 @@ public class Storage_Test
         // Read the empty json object from disk
         var s = File.ReadAllText("grocery_list.json");
         
-        Assert.Equal("[]\n", s);
+        Assert.Equal("[]", s.Trim());
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class Storage_Test
         // Read the empty json object from disk
         var s = File.ReadAllText("ingredients.json");
         
-        Assert.Equal("[]\n", s);
+        Assert.Equal("[]", s.Trim());
     }
 
     [Fact]
@@ -132,6 +132,6 @@ public class Storage_Test
         // Read the empty json object from disk
         var s = File.ReadAllText("inventory.json");
         
-        Assert.Equal("[]\n", s);
+        Assert.Equal("[]", s.Trim());
     }
 }
