@@ -20,6 +20,8 @@ public static class Storage
 
         recipes = JsonSerializer.Deserialize<List<Recipes.Recipe>>(reader.ReadToEnd());
 
+        reader.Close();
+
         return "";
     }
 
@@ -30,6 +32,8 @@ public static class Storage
         using StreamWriter fd = new StreamWriter(recipeFile);
         fd.WriteLine(data);
 
+        fd.Close();
+        
         return "";
     }
 
@@ -39,6 +43,8 @@ public static class Storage
 
         groceryList = JsonSerializer.Deserialize<List<Grocery.GroceryListItem>>(reader.ReadToEnd());
 
+        reader.Close();
+        
         return "";
     }
 
@@ -49,6 +55,8 @@ public static class Storage
         using StreamWriter fd = new StreamWriter(groceryFile);
         fd.WriteLine(data);
 
+        fd.Close();
+        
         return "";
     }
 
@@ -58,6 +66,8 @@ public static class Storage
 
         substitutions = JsonSerializer.Deserialize<List<Ingredient.Substitution>>(reader.ReadToEnd());
 
+        reader.Close();
+        
         return "";
     }
 
@@ -68,6 +78,8 @@ public static class Storage
         using StreamWriter fd = new StreamWriter(ingredientFile);
         fd.WriteLine(data);
 
+        fd.Close();
+        
         return "";
     }
 
@@ -77,6 +89,8 @@ public static class Storage
 
         inventory = JsonSerializer.Deserialize<List<Inventory.IngredientAmount>>(reader.ReadToEnd());
 
+        reader.Close();
+        
         return "";
     }
 
@@ -87,6 +101,8 @@ public static class Storage
         using StreamWriter fd = new StreamWriter(inventoryFile);
         fd.WriteLine(data);
 
+        fd.Close();
+        
         return "";
     }
 }
