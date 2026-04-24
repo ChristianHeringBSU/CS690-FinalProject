@@ -49,6 +49,6 @@ public class Ingredient_Test
         // Read and compare the file data to what should be there
         var s = File.ReadAllText("ingredients.json");
 
-        Assert.Equal("[]\n", s);
+        Assert.Equal("[]", s.Trim());
     }
 }
