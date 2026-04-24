@@ -6,7 +6,7 @@ using cs690_final_project_source;
 
 public class Inventory_Test
 {
-    [Fact]
+    [Collection("Sequential")]
     public void InventorySearch_Test()
     {
         // Write data to disk
@@ -23,7 +23,7 @@ public class Inventory_Test
         Assert.Equal(768, result.amount);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void InventoryAdd_Test()
     {
         // Write data to inventory.json
@@ -47,7 +47,7 @@ public class Inventory_Test
         Assert.Equal(800, result.amount);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void InventoryRemove_Test()
     {
         // Write data to inventory.json
@@ -73,7 +73,7 @@ public class Inventory_Test
         Assert.Equal(700, result.amount);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void InventoryAddNew_Test()
     {
         // Write data to inventory.json
