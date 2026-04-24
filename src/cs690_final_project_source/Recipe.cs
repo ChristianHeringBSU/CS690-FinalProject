@@ -52,6 +52,8 @@ public class Recipes
         Storage.recipes.Add(newrecipe);
         Storage.recipes.Remove(recipe);
 
+        reader.Close();
+
         return Storage.WriteRecipes();
     }
 
