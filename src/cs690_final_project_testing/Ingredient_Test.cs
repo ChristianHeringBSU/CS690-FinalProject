@@ -44,7 +44,7 @@ public class Ingredient_Test
         Storage.ReadSubstitutions();
 
         // Delete the only substitution
-        var _ = Ingredient.SubstitutionDelete("0");
+        var _ = Ingredient.SubstitutionDelete("eggs", "applesauce");
 
         // Read and compare the file data to what should be there
         var s = File.ReadAllText("ingredients.json");
