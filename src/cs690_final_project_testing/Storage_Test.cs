@@ -36,7 +36,7 @@ public class Storage_Test
         // Read out the data from recipes.json
         var s = File.ReadAllText("recipes.json");
         
-        Assert.Equal("[]\n", s);
+        Assert.Equal("[]", s.Trim());
     }
 
     [Fact]
