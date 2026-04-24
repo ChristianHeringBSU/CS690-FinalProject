@@ -6,7 +6,7 @@ using cs690_final_project_source;
 
 public class Grocery_Test
 {
-    [Fact]
+    [Collection("Sequential")]
     public void GroceryListAdd_Test()
     {
         // Write empty json list object to grocery_list.json
@@ -23,7 +23,7 @@ public class Grocery_Test
         Assert.Equal("eggs", Storage.groceryList[0].item.name);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void GroceryListMark_Test()
     {
         // Write file data
@@ -43,7 +43,7 @@ public class Grocery_Test
         Assert.Equal(!was_marked, Storage.groceryList.Find(n => n.item.name == "oranges").marked);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void GroceryListDelete_Test()
     {
         // Write file data
@@ -62,7 +62,7 @@ public class Grocery_Test
         Assert.Equal(original_count - 1, Storage.groceryList.Count);
     }
 
-    [Fact]
+    [Collection("Sequential")]
     public void GroceryListClear_Test()
     {
         // Write file data
