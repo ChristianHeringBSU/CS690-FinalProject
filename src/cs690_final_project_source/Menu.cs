@@ -385,7 +385,6 @@ public class Menu
 
         var substitutions = new Table();
         
-        substitutions.AddColumn("Index");
         substitutions.AddColumn("Item To Replace");
         substitutions.AddColumn("Substitution");
         
@@ -396,7 +395,7 @@ public class Menu
                 continue;
             }
 
-            substitutions.AddRow(Storage.substitutions.IndexOf(item).ToString(), item.toSub.name.ToString(), item.sub.name.ToString());
+            substitutions.AddRow(item.toSub.name.ToString(), item.sub.name.ToString());
         }
         
         AnsiConsole.Write(substitutions);
@@ -429,12 +428,12 @@ public class Menu
 
         foreach(var item in Storage.substitutions)
         {
-            options.Add(item.sub.name.ToString());
+            options.Add(item.toSub.name.ToString() + " -> " + item.sub.name.ToString());
         }
 
         string selection = DisplaySelectMenu("Substitution Menu", "Delete A Substitution", options);
 
-        return Ingredient.SubstitutionDelete(selection);
+        return Ingredient.SubstitutionDelete(selection.Split(" -> ")[0], selection.Split(" -> ")[1]);
     }
 
     static string InventoryManagementMenu()
